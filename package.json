@@ -36,13 +36,11 @@
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "git-url-parse": "^16.0.0",
     "globby": "^14.0.2",
+    "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=20"
-  },
-  "dependencies": {
-    "nodemon": "^3.1.9"
   }
 }
