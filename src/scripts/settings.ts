@@ -1,11 +1,11 @@
 declare global {
     interface SettingConfig {
-        '{{PACKAGE_NAME}}.your-config': string;
+        'getting-lost.your-config': string;
     }
 }
 
 class Settings {
-    #SETTINGS_ID: '{{PACKAGE_NAME}}' = '{{PACKAGE_NAME}}';
+    #SETTINGS_ID: 'getting-lost' = 'getting-lost';
 
     /**
      * 

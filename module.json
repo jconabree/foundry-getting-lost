@@ -1,6 +1,6 @@
 {
-  "id": "{{PACKAGE_NAME}}",
-  "title": "{{MODULE_NAME}}",
+  "id": "getting-lost",
+  "title": "Getting Lost Helper",
   "description": "Foundry VTT Module",
   "version": "#{VERSION}#",
   "library": "false",
@@ -12,8 +12,8 @@
   },
   "authors": [
     {
-      "name": "{{AUTHOR_NAME}}",
-      "url": "https://github.com/{{GITHUB_OWNER}}"
+      "name": "Justin Conabree",
+      "url": "https://github.com/jconabree"
     }
   ],
   "relationships": {
@@ -50,7 +50,7 @@
   "media": [
     {
       "type": "icon",
-      "url": "https://raw.githubusercontent.com/{{GITHUB_FULLNAME}}/refs/heads/main/icons/logo.png"
+      "url": "https://raw.githubusercontent.com/jconabree/foundry-getting-lost/refs/heads/main/icons/logo.png"
     }
   ]
 }

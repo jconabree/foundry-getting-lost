@@ -1,21 +1,21 @@
 {
-  "name": "{{PACKAGE_NAME}}",
+  "name": "getting-lost",
   "version": "#{VERSION}#",
   "description": "Foundry VTT Module",
   "repository": {
     "type": "git",
-    "url": "{{GITHUB_URL}}"
+    "url": "git@github.com:jconabree/foundry-getting-lost.git"
   },
   "keywords": [
     "Foundry VTT",
     "WLED"
   ],
-  "author": "{{AUTHOR_NAME}}",
+  "author": "Justin Conabree",
   "license": "SEE LICENSE",
   "bugs": {
-    "url": "https://github.com/{{GITHUB_FULLNAME}}/issues"
+    "url": "https://github.com/jconabree/foundry-getting-lost/issues"
   },
-  "homepage": "https://github.com/{{GITHUB_FULLNAME}}#readme",
+  "homepage": "https://github.com/jconabree/foundry-getting-lost#readme",
   "main": "dist/module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,9 +23,7 @@
     "build:scripts": "tsc",
     "build:styles": "cp -r src/styles dist/",
     "build:languages": "cp -r src/languages dist/",
-    "clean": "rimraf ./dist/*",
-    "template:setup": "node tools/install.mjs",
-    "template:clean": "node tools/clean.mjs && rimraf ./tools"
+    "clean": "rimraf ./dist/*"
   },
   "devDependencies": {
     "@inquirer/prompts": "^7.2.1",
