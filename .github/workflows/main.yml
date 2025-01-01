@@ -101,10 +101,12 @@ jobs:
           MANIFEST: ${{ env.latest_manifest_url }}
           DOWNLOAD: ${{ env.release_module_url }}
       
-      - name: Build release
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      
+      - name: Build package
         run: |
           npm ci
           npm run build:full
