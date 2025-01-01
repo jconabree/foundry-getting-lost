@@ -42,10 +42,9 @@ There are three ways you can trigger getting lost.
 These will all output the map into the chat for everyone to see. The output map will also be added to a new handout for future reference
 
 ## Development
+
+### Installation
 ```
 npm install
 npm run build:all
 ```
-
-## Release
-[Create a new release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release) in Github

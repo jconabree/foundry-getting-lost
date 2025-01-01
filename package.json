@@ -1,5 +1,5 @@
 {
-  "name": "getting-lost",
+  "name": "foundry-getting-lost",
   "version": "#{VERSION}#",
   "description": "Foundry VTT Module",
   "repository": {
@@ -23,11 +23,16 @@
     "build:scripts": "tsc",
     "build:styles": "cp -r src/styles dist/",
     "build:languages": "cp -r src/languages dist/",
+    "watch:all": "concurrently \"npm run watch:scripts\" \"npm run watch:styles\" \"npm run watch:languages\"",
+    "watch:scripts": "tsc --watch",
+    "watch:styles": "nodemon -L --watch src/styles -e css --exec 'npx rimraf ./dist/styles/* && npm run build:styles'",
+    "watch:languages": "nodemon -L --watch src/languages -e css --exec 'npx rimraf ./dist/languages/* && npm run build:languages'",
     "clean": "rimraf ./dist/*"
   },
   "devDependencies": {
     "@inquirer/prompts": "^7.2.1",
     "chalk": "^5.4.1",
+    "concurrently": "^9.1.2",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "git-url-parse": "^16.0.0",
     "globby": "^14.0.2",
@@ -36,5 +41,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.9"
   }
 }

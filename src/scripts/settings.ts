@@ -1,11 +1,11 @@
 declare global {
     interface SettingConfig {
-        'getting-lost.your-config': string;
+        'foundry-getting-lost.your-config': string;
     }
 }
 
 class Settings {
-    #SETTINGS_ID: 'getting-lost' = 'getting-lost';
+    #SETTINGS_ID: 'foundry-getting-lost' = 'foundry-getting-lost';
 
     /**
      * 

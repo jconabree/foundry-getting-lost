@@ -1,5 +1,5 @@
 {
-  "id": "getting-lost",
+  "id": "foundry-getting-lost",
   "title": "Getting Lost Helper",
   "description": "Foundry VTT Module",
   "version": "#{VERSION}#",
@@ -30,10 +30,11 @@
     "requires": []
   },
   "esmodules": [
-    "dist/module.js"
+    "dist/scripts/module.js"
   ],
+  "scripts": [],
   "styles": [
-    "dist/module.css"
+    "dist/styles/module.css"
   ],
   "languages": [
     {
