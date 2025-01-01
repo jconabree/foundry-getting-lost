@@ -1,0 +1,42 @@
+{
+  "name": "{{PACKAGE_NAME}}",
+  "version": "#{VERSION}#",
+  "description": "Foundry VTT Module",
+  "repository": {
+    "type": "git",
+    "url": "{{GITHUB_URL}}"
+  },
+  "keywords": [
+    "Foundry VTT",
+    "WLED"
+  ],
+  "author": "{{AUTHOR_NAME}}",
+  "license": "SEE LICENSE",
+  "bugs": {
+    "url": "https://github.com/{{GITHUB_FULLNAME}}/issues"
+  },
+  "homepage": "https://github.com/{{GITHUB_FULLNAME}}#readme",
+  "main": "dist/module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:all": "npm run clean && npm run build:scripts && npm run build:styles && npm run build:languages",
+    "build:scripts": "tsc",
+    "build:styles": "cp -r src/styles dist/",
+    "build:languages": "cp -r src/languages dist/",
+    "clean": "rimraf ./dist/*",
+    "template:setup": "node tools/install.mjs",
+    "template:clean": "node tools/clean.mjs && rimraf ./tools"
+  },
+  "devDependencies": {
+    "@inquirer/prompts": "^7.2.1",
+    "chalk": "^5.4.1",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
+    "git-url-parse": "^16.0.0",
+    "globby": "^14.0.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
