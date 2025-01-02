@@ -1,0 +1,20 @@
+
+{{!-- Sheet Body --}}
+<section class="sheet-body grid grid-1col">
+    {{#each items}}
+        <div class="lost-map-item grid-4col">
+            <div class="col-span item-image">
+                <img src="{{mapImage}}" />
+            </div>
+            <div class="col-span2 item-info">
+                <div>{{name}}</div>
+                <div>Divisions: {{divisions}}</div>
+            </div>
+            <div class="col-span item-actions">
+                <div>Run</div>
+                <div>Edit</div>
+                <div>Delete</div>
+            </div>
+        </div>
+    {{/each}}
+</section>

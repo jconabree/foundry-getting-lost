@@ -1,3 +1,6 @@
 {
-    "foundry-getting-lost.hello": "hello"
+    "foundry-getting-lost.sheet.title": "Lost Map Configuration",
+    "foundry-getting-lost.list.title": "Lost Maps",
+    "foundry-getting-lost.tab.general": "General",
+    "foundry-getting-lost.tab.weights": "Roll Weights"
 }
