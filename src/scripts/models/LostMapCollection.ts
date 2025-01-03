@@ -23,4 +23,8 @@ export class LostMapCollection extends WorldCollection<typeof LostMap, 'LostMap'
     static override get documentClass(): typeof LostMap {
         return LostMap;
     }
+
+    static addCollectionToGame(game: Game) {
+        game.collections!.set('LostMap', LostMapCollection.entries());
+    }
 }

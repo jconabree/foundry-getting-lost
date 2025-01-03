@@ -10,8 +10,8 @@ class LostMaps {
     }
 
     initModel() {
-        CONFIG.LostMap = LostMap;
-        game.collections!.LostMap = LostMapCollection;
+        LostMap.addDocumentToConfig();
+        LostMapCollection.addCollectionToGame(game as InitGame);
     }
 
     initSidebar() {

@@ -16,7 +16,9 @@ interface ListingContext extends AnyObject {
     items: LostMapCollection
 }
 
-class ListingApplication extends foundry.applications.api.ApplicationV2<ListingContext, ListingApplicationConfiguration, ListingApplicationRenderOptions> {
+class ListingApplication extends foundry.applications.api.HandlebarsApplicationMixin(
+    foundry.applications.api.ApplicationV2<ListingContext, ListingApplicationConfiguration, ListingApplicationRenderOptions>
+) {
     static DEFAULT_OPTIONS = {
         id: 'lost-maps-list',
         form: {
@@ -40,7 +42,7 @@ class ListingApplication extends foundry.applications.api.ApplicationV2<ListingC
         },
         list: {
           template: "./modules/foundry-getting-lost/templates/list.hbs",
-          scrollable: true,
+          scrollable: [''],
         }
     }
 

@@ -32,6 +32,10 @@ export class LostMap extends ClientDocumentMixin(foundry.documents.BaseRollTable
 	}
 
 	static lostMap: typeof LostMap;
+
+	static addDocumentToConfig() {
+		CONFIG.LostMap = LostMap;
+	}
 }
   
 // Schema interface to aid with type inference (optional but useful)
