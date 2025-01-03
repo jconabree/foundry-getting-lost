@@ -2,10 +2,6 @@ declare global {
 	interface DocumentClassConfig {
 		LostMap: typeof LostMap;
 	}
-
-    interface CONFIG {
-        LostMap: typeof LostMap;
-    }
 }
 
 export class LostMap extends ClientDocumentMixin(foundry.documents.BaseRollTable) {
@@ -32,10 +28,6 @@ export class LostMap extends ClientDocumentMixin(foundry.documents.BaseRollTable
 	}
 
 	static lostMap: typeof LostMap;
-
-	static addDocumentToConfig() {
-		CONFIG.LostMap = LostMap;
-	}
 }
   
 // Schema interface to aid with type inference (optional but useful)

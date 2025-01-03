@@ -2,6 +2,21 @@ import logger from './logger.js';
 import { LostMap } from './models/LostMap.js';
 import { LostMapCollection } from './models/LostMapCollection.js';
 import listing from './lostMaps/listing.js';
+import { LostMapSheet } from './lostMaps/sheet.js';
+
+declare global {
+    interface Game {
+        lostMaps: LostMapCollection
+    }
+
+    interface CONFIG {
+        LostMap: {
+            documentClass: typeof LostMap;
+            sheetClass: typeof LostMapSheet;
+            collection: typeof LostMapCollection;
+        }
+    }
+}
 
 class LostMaps {
     init() {
@@ -10,8 +25,17 @@ class LostMaps {
     }
 
     initModel() {
-        LostMap.addDocumentToConfig();
-        LostMapCollection.addCollectionToGame(game as InitGame);
+        CONFIG.LostMap = {
+            documentClass: LostMap,
+            sheetClass: LostMapSheet,
+            collection: LostMapCollection,
+        };
+        const loadedMaps: LostMap[] = []
+        // @ts-ignore
+        game.data.lostMaps = loadedMaps;
+        const lostMapsCollection = new LostMapCollection(loadedMaps);
+        game.lostMaps = lostMapsCollection;
+        game.collections!.set('LostMap', lostMapsCollection);
     }
 
     initSidebar() {
