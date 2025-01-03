@@ -1,6 +1,6 @@
 // TODO handle opening dialog, listing, CRUD + interface, etc
 import { LostMap } from "../models/LostMap.js";
-import { LostMapCollection } from "../models/LostMapCollection.js";
+import { LostMaps } from "../models/LostMapCollection.js";
 import logger from "../logger.js";
 import { AnyObject, DeepPartial } from "@league-of-foundry-developers/fvtt-types/utils";
 
@@ -13,7 +13,7 @@ interface ListingApplicationRenderOptions extends foundry.applications.api.Appli
 }
 
 interface ListingContext extends AnyObject {
-    items: LostMapCollection
+    items: LostMaps
 }
 
 class ListingApplication extends foundry.applications.api.HandlebarsApplicationMixin(
@@ -38,10 +38,10 @@ class ListingApplication extends foundry.applications.api.HandlebarsApplicationM
 
     static PARTS = {
         header: {
-          template: "./modules/foundry-getting-lost/templates/list-header.hbs"
+          template: "./modules/foundry-getting-lost/dist/templates/list-header.hbs"
         },
         list: {
-          template: "./modules/foundry-getting-lost/templates/list.hbs",
+          template: "./modules/foundry-getting-lost/dist/templates/list.hbs",
           scrollable: [''],
         }
     }
@@ -60,18 +60,21 @@ class ListingApplication extends foundry.applications.api.HandlebarsApplicationM
         const context = await super._prepareContext(options);
         return {
             ...context,
-            items: (await game.collections!.get('LostMap')) as LostMapCollection
+            items: (await game.collections!.get('LostMap')) as LostMaps
         };
     }
 
     _onRender(context: ListingContext, options: ListingApplicationRenderOptions) {
-
+        this.element.querySelectorAll<HTMLButtonElement>('.create-new-lost-map').forEach((button) => {
+            button.onclick = () => LostMap.createDialog()
+        })
     }
 }
 
 class Listing {
     open() {
-        new ListingApplication({}).render();
+        console.log('open app');
+        new ListingApplication({}).render({ force: true });
     }
 }
 

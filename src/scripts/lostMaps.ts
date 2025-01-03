@@ -1,24 +1,24 @@
 import logger from './logger.js';
 import { LostMap } from './models/LostMap.js';
-import { LostMapCollection } from './models/LostMapCollection.js';
+import { LostMaps } from './models/LostMapCollection.js';
 import listing from './lostMaps/listing.js';
 import { LostMapSheet } from './lostMaps/sheet.js';
 
 declare global {
     interface Game {
-        lostMaps: LostMapCollection
+        lostMaps: LostMaps
     }
 
     interface CONFIG {
         LostMap: {
             documentClass: typeof LostMap;
             sheetClass: typeof LostMapSheet;
-            collection: typeof LostMapCollection;
+            collection: typeof LostMaps;
         }
     }
 }
 
-class LostMaps {
+class LostMapsHelper {
     init() {
         this.initModel();
         this.initSidebar();
@@ -28,12 +28,12 @@ class LostMaps {
         CONFIG.LostMap = {
             documentClass: LostMap,
             sheetClass: LostMapSheet,
-            collection: LostMapCollection,
+            collection: LostMaps,
         };
         const loadedMaps: LostMap[] = []
         // @ts-ignore
         game.data.lostMaps = loadedMaps;
-        const lostMapsCollection = new LostMapCollection(loadedMaps);
+        const lostMapsCollection = new LostMaps(loadedMaps);
         game.lostMaps = lostMapsCollection;
         game.collections!.set('LostMap', lostMapsCollection);
     }
@@ -56,13 +56,13 @@ class LostMaps {
         button.innerHTML = 'Manage Lost Maps';
         button.className = 'open-lost-maps';
         button.addEventListener('click', () => {
+            console.log('button clicked');
             listing.open();
         });
 
-        // Find the footer in the sidebar and append the button
         const headerActions = html.find('.directory-header .header-actions');
         headerActions.append(button);
     }
 }
 
-export default new LostMaps();
+export default new LostMapsHelper();

@@ -34,13 +34,13 @@ export class LostMapSheet extends foundry.applications.api.DocumentSheetV2<LostM
 
     static PARTS = {
         header: {
-            template: "./modules/foundry-getting-lost/templates/sheet-header.hbs"
+            template: "./modules/foundry-getting-lost/dist/templates/sheet-header.hbs"
         },
         general: {
-            template: "./modules/foundry-getting-lost/templates/sheet-general.hbs"
+            template: "./modules/foundry-getting-lost/dist/templates/sheet-general.hbs"
         },
         weights: {
-            template: "./modules/foundry-getting-lost/templates/sheet-weights.hbs"
+            template: "./modules/foundry-getting-lost/dist/templates/sheet-weights.hbs"
         },
 
     }

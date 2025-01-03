@@ -5,6 +5,7 @@ declare global {
 }
 
 export class LostMap extends ClientDocumentMixin(foundry.documents.BaseRollTable) {
+	
 	// Define the schema properly as an object with string keys
 	static override defineSchema(): LostMapSchema {
 		return {
