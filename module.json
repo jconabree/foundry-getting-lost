@@ -53,5 +53,18 @@
       "type": "icon",
       "url": "https://raw.githubusercontent.com/jconabree/foundry-getting-lost/refs/heads/main/icons/logo.png"
     }
-  ]
+  ],
+  "documentTypes": {
+    "JournalEntryPage": {
+      "lostMap": {
+        "htmlFields": ["flavorText"],
+        "filePathFields": {
+          "mapImage": ["IMAGE"]
+        }
+      },
+      "lostMapResult": {
+        "htmlFields": ["content"]
+      }
+    }
+  }
 }

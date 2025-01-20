@@ -1,0 +1,27 @@
+<form class="{{ cssClass }} flexcol" autocomplete="off">
+    {{> journalEntryPageHeader }}
+
+
+    <div class="form-group">
+        <label>{{localize "foundry-getting-lost.sheet.mapImage"}}</label>
+        <div class="form-fields">
+            <file-picker name="system.mapImage.src" type="image" value="{{system.mapImage.src}}"></file-picker>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ localize "foundry-getting-lost.sheet.divisions" }}</label>
+        <div class="form-fields">
+            <select name="system.divisions">
+                {{ selectOptions AVAILABLE_DIVISIONS selected=system.divisions localize=true }}
+            </select>
+        </div>
+        <p class="hint">
+            {{ localize "foundry-getting-lost.sheet.divisions.hint" }}
+        </p>
+    </div>
+    <div class="form-group">
+        <label>{{ localize "foundry-getting-lost.sheet.flavorText" }}</label>
+    </div>
+    {{ editor editor.content target="system.text.content" button=false editable=editable
+        engine=editor.engine collaborate=editor.collaborate }}
+</form>

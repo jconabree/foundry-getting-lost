@@ -1,22 +1,6 @@
 import logger from './logger.js';
 import { LostMap } from './models/LostMap.js';
-import { LostMaps } from './models/LostMapCollection.js';
-import listing from './lostMaps/listing.js';
-import { LostMapSheet } from './lostMaps/sheet.js';
-
-declare global {
-    interface Game {
-        lostMaps: LostMaps
-    }
-
-    interface CONFIG {
-        LostMap: {
-            documentClass: typeof LostMap;
-            sheetClass: typeof LostMapSheet;
-            collection: typeof LostMaps;
-        }
-    }
-}
+import LostMapSheet from './sheets/LostMap.js';
 
 class LostMapsHelper {
     init() {
@@ -25,17 +9,15 @@ class LostMapsHelper {
     }
 
     initModel() {
-        CONFIG.LostMap = {
-            documentClass: LostMap,
-            sheetClass: LostMapSheet,
-            collection: LostMaps,
-        };
-        const loadedMaps: LostMap[] = []
-        // @ts-ignore
-        game.data.lostMaps = loadedMaps;
-        const lostMapsCollection = new LostMaps(loadedMaps);
-        game.lostMaps = lostMapsCollection;
-        game.collections!.set('LostMap', lostMapsCollection);
+        Object.assign(CONFIG.JournalEntryPage.dataModels, {
+            'foundry-getting-lost.lostMap': LostMap
+        });
+
+        DocumentSheetConfig.registerSheet(JournalEntryPage, 'foundry-getting-lost', LostMapSheet, {
+            label: 'Lost Map',
+            types: ['foundry-getting-lost.lostMap'],
+            makeDefault: false
+        });
     }
 
     initSidebar() {
@@ -43,9 +25,7 @@ class LostMapsHelper {
             logger.log('rendering sidebar tab', app.tabName);
             // TODO check if current user is GM
 
-            if (app.tabName === 'tables') {
-                logger.log('Founnd app with option tables');
-
+            if (app.tabName === 'journals') {
                 this._addRolltableButton(app, html);
             }
         });
@@ -53,11 +33,10 @@ class LostMapsHelper {
 
     _addRolltableButton(app: SidebarTab, html: JQuery) {
         const button = document.createElement('button');
-        button.innerHTML = 'Manage Lost Maps';
-        button.className = 'open-lost-maps';
+        button.innerHTML = 'Create New Lost Map';
+        button.className = 'create-lost-map';
         button.addEventListener('click', () => {
             console.log('button clicked');
-            listing.open();
         });
 
         const headerActions = html.find('.directory-header .header-actions');
