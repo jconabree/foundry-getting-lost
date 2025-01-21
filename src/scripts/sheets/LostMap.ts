@@ -3,8 +3,18 @@ import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
 import { LostMap } from '../models/LostMap.js';
 
+type LostMapDivisionLine = {
+	percent: number;
+	color: string;
+};
+
 type JournalLostMapPageSheetContext = MaybePromise<GetDataReturnType<JournalPageSheet.JournalPageSheetData>> & {
-	document: LostMap
+	document: LostMap;
+	system: LostMap;
+	AVAILABLE_DIVISIONS: {
+		[key: string]: string;
+	}
+	lines?: LostMapDivisionLine[];
 }
 
 export default class JournalLostMapPageSheet extends JournalTextPageSheet {
@@ -49,24 +59,54 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
 		// @ts-ignore
 		context.AVAILABLE_DIVISIONS = Object.fromEntries(
-			Array.from({ length: 6 }).map((_, index) => [index, index])
+			Array.from({ length: LostMap.MAX_DIVISIONS }).map((_, index) => [
+				(index + 1).toString(),
+				`foundry-getting-lost.sheet.divisionOption${index + 1}`
+			])
 		);
 
-		// context.flavorText = await TextEditor.enrichHTML(
-		// 	// @ts-ignore
-		// 	context.document.flavorText.value,
-		// 	{
-		// 		// @ts-ignore
-		// 		async: true,
-		// 		secrets: this.object.isOwner,
-		// 		relativeTo: this.object
-		// 	}
-		// );
-		// @ts-ignore
-		// if ( context. === "<p></p>" ) context.flavorText = "";      
+		this._addDivisionLines(context); 
   
-      return context;
+      	return context;
     }
+
+	_addDivisionLines(context: JournalLostMapPageSheetContext) {
+		const divisions = context.system.divisions;
+		if (!divisions) {
+			return;
+		}
+
+		const lineColors = [
+			"#FF5733", // Vibrant Red-Orange
+			"#33FF57", // Bright Green
+			"#3357FF", // Strong Blue
+			"#F7DC6F", // Warm Yellow
+			"#AF7AC5", // Soft Purple
+			"#48C9B0", // Cool Teal
+		];
+
+		const lines = Array.from({ length: divisions })
+			.reduce((collectedLines: LostMapDivisionLine[], _, index) => {
+				const numberOfLines = Math.pow(2, (index + 1))
+				const basePercent = 100 / numberOfLines;
+				const color = lineColors[index];
+
+				for (let i = 1; i <= numberOfLines; i++) {
+					if (i % 2 === 0) {
+						continue;
+					}
+
+					collectedLines.push({
+						color,
+						percent: basePercent * i
+					});
+				}
+
+				return collectedLines;
+			}, []);
+
+		context.lines = lines;
+	}
 
     /** @inheritDoc */
     activateListeners(jQuery: JQuery) {

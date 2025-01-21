@@ -4,5 +4,25 @@
 </header>
 {{/if}}
 <section class="journal-page-content">
+    <div class="">
+        <div>{{localize "foundry-getting-lost.sheet.mapImage"}}</div>
+        {{#if system.mapImage}}
+            <div style="position:relative;width:100%;">
+                <img src="{{system.mapImage}}" width="100%" />
+                {{#if lines}}
+                    {{#each lines}}
+                        <div style="position:absolute;left:{{percent}}%;top:0;width:2px;height:100%;transform:translateX(-50%);background-color:{{color}};"></div>
+                        <div style="position:absolute;left:0;top:{{percent}}%;width:100%;height:2px;transform:translateY(-50%);background-color:{{color}};"></div>
+                    {{/each}}
+                {{/if}}
+            </div>
+        {{else}}
+            Not Set
+        {{/if}}
+        <div>{{localize "foundry-getting-lost.sheet.divisions"}}: {{system.divisions}}</div>
+    </div>
+    <div class="">
+        {{ localize "foundry-getting-lost.sheet.flavorText" }}
+    </div>
     {{{editor.content}}}
 </section>

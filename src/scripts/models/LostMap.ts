@@ -5,6 +5,9 @@ declare global {
 }
 
 export class LostMap extends foundry.abstract.TypeDataModel<LostMapSchema, foundry.documents.BaseJournalEntry> {
+	static MAX_DIVISIONS = 5;
+	static MIN_DIVISIONS = 1;
+
 	static override defineSchema(): LostMapSchema {
 		return {
 			name: new foundry.data.fields.StringField({ required: true }),
@@ -31,8 +34,8 @@ export class LostMap extends foundry.abstract.TypeDataModel<LostMapSchema, found
 			}),
 			divisions: new foundry.data.fields.NumberField({
 				required: true,
-				default: 1,
-				validate: (n: number) => n >= 1 && n <= 6,
+				default: 3,
+				validate: (n: number) => n >= LostMap.MIN_DIVISIONS && n <= LostMap.MAX_DIVISIONS,
 			}),
 			rollTableAdjustments: new foundry.data.fields.JSONField({
 				required: true,

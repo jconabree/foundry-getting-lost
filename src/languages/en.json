@@ -4,5 +4,11 @@
     "foundry-getting-lost.sheet.flavorText": "Flavor Text",
     "foundry-getting-lost.sheet.mapImage": "Map Image",
     "foundry-getting-lost.sheet.divisions": "Divisions",
-    "foundry-getting-lost.sheet.divisions.hint": "Number of rolls/sub-divisions to determine party position"
+    "foundry-getting-lost.sheet.divisionsHint": "Number of rolls/sub-divisions to determine party position",
+    "foundry-getting-lost.sheet.divisionOption1": "1 division",
+    "foundry-getting-lost.sheet.divisionOption2": "2 division",
+    "foundry-getting-lost.sheet.divisionOption3": "3 division",
+    "foundry-getting-lost.sheet.divisionOption4": "4 division",
+    "foundry-getting-lost.sheet.divisionOption5": "5 division",
+    "foundry-getting-lost.sheet.divisionOption6": "6 division"
 }
