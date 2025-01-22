@@ -10,7 +10,7 @@ type LostMapDivisionLine = {
 };
 
 type JournalLostMapPageSheetContext = MaybePromise<GetDataReturnType<JournalPageSheet.JournalPageSheetData>> & {
-	document: LostMap;
+	document: LostMap & { system: LostMap };
 	system: LostMap;
 	AVAILABLE_DIVISIONS: {
 		[key: string]: string;
@@ -51,7 +51,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 			engine: "prosemirror",
 			collaborate: true,
 			// @ts-ignore
-			content: await TextEditor.enrichHTML(context.system.text.content, {
+			content: await TextEditor.enrichHTML(context.document.text.content, {
 				relativeTo: this.object,
 				secrets: this.object.isOwner,
 				// @ts-ignore
@@ -124,10 +124,6 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
     activateListeners(jQuery: JQuery) {
       super.activateListeners(jQuery);
   
-    //   html.querySelector('[name="grouping"]')?.addEventListener("change", event => {
-    //     this.grouping = (event.target.value === this.document.system.grouping) ? null : event.target.value;
-    //     this.object.parent.sheet.render();
-    //   });
       jQuery.find<HTMLButtonElement>("[data-action]").on<'click'>('click', this._onAction.bind(this));
     }
   
@@ -169,12 +165,10 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 						name: `${this.document.name} - Result`,
 						mapImage: lostMap.mapImage,
 						divisions: lostMap.divisions,
-						text: {
-							content: this.document.text.content
-						},
 						rollTableAdjustments: lostMap.rollTableAdjustments,
 						rollResult: results
 					},
+					sort: journalEntry.pages.entries.length + 1,
 					text: this.document.text,
 				};
 				const [resultPage] = await journalEntry.createEmbeddedDocuments(
@@ -188,10 +182,6 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
 					return;
 				}
-
-				const pages = journalEntry.pages.filter(page => page.id !== resultPage.id);
-				pages.push(resultPage);
-				await journalEntry.update({ pages: pages.map(page => page.id) });
 
 				await Journal.show(resultPage);
 				

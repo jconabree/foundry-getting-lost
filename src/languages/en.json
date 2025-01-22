@@ -13,5 +13,7 @@
     "foundry-getting-lost.sheet.divisionOption4": "4 division",
     "foundry-getting-lost.sheet.divisionOption5": "5 division",
     "foundry-getting-lost.sheet.divisionOption6": "6 division",
-    "foundry-getting-lost.result.rolls": "Roll Results"
+    "foundry-getting-lost.result.rolls": "Roll Results",
+    "foundry-getting-lost.result.showDivisions": "Show Divisions",
+    "foundry-getting-lost.result.hideDivisions": "Hide Divisions"
 }

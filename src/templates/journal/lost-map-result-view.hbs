@@ -4,10 +4,18 @@
 </header>
 {{/if}}
 <section class="journal-page-content">
-    {{{content}}}
+    <div class="fgl-result-text">
+        {{{content}}}
+    </div>
     <hr />
-    <div>
+    <div class="fgl-roll-results">
         {{localize "foundry-getting-lost.result.rolls"}}: {{formattedRolls}}
+    </div>
+    <div class="fgl-actions-row">
+        <button class="fgl-button active" data-action="toggle-divisions">
+            <span class="active-text">{{localize "foundry-getting-lost.result.hideDivisions"}}</span>
+            <span class="inactive-text">{{localize "foundry-getting-lost.result.showDivisions"}}</span>
+        </button>
     </div>
     <div class="fgl-lost-map-container">
         <div class="fgl-lost-map-wrapper">

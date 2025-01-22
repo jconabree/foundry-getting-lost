@@ -3,6 +3,46 @@
     width: 100%;
 }
 
+.fgl-result-text {
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+.fgl-roll-results {
+    font-size: 0.75rem;
+    margin: 0.5rem 0;
+}
+
+.fgl-actions-row {
+    display: flex;
+    justify-content: end;
+}
+
+.fgl-actions-row .fgl-button {
+    font-size: 0.75rem;
+}
+
+.fgl-button {
+    width: auto;
+    margin-bottom: 0.625em;
+}
+
+.fgl-button > span.inactive-text {
+    display: block;
+}
+
+.fgl-button > span.active-text {
+    display: none;
+}
+
+.fgl-button.active > span.inactive-text {
+    display: none;
+}
+
+.fgl-button.active > span.active-text {
+    display: block;
+}
+
 .fgl-lost-map-division {
     display: none;
     position: absolute;

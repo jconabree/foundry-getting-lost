@@ -9,8 +9,13 @@ type LostMapDivisionLine = {
 	color: string;
 };
 
-type JournalLostMapResultPageSheetContext = MaybePromise<GetDataReturnType<JournalPageSheet.JournalPageSheetData>> & {
-	document: LostMapResult & { system: LostMapResult };
+type JournalLostMapResultPageSheetContext = MaybePromise<GetDataReturnType<JournalTextPageSheet.TextData>> & {
+	document: LostMapResult & {
+		text: {
+			content: string;
+		}
+		system: LostMapResult
+	};
 	system: LostMapResult;
 	content: string;
 	lines: LostMapDivisionLine[];
@@ -52,7 +57,7 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
 		const context = await super.getData(options) as JournalLostMapResultPageSheetContext;
 		context.system = context.document.system;
 
-		context.content = await TextEditor.enrichHTML(context.system.text.content!, {
+		context.content = await TextEditor.enrichHTML(context.document.text.content!, {
 			relativeTo: this.object,
 			secrets: this.object.isOwner,
 			// @ts-ignore
@@ -147,9 +152,15 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
         logger.log('Action Event', event);
 
 		event.preventDefault();
-		const { action } = (event.target as HTMLButtonElement).dataset;
+		const $button = $(event.target).closest('button');
+		const action = $button.data('action');
 
 		switch (action) {
+			case 'toggle-divisions':
+				$button.toggleClass('active');
+				$button.closest('.journal-page-content').find('.fgl-lost-map-division').toggleClass('shown');
+
+				break;
 			default:
 		}
     }
