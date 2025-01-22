@@ -1,0 +1,24 @@
+{{#if data.title.show}}
+<header class="journal-page-header">
+    <h{{data.title.level}}>{{data.name}}</h{{data.title.level}}>
+</header>
+{{/if}}
+<section class="journal-page-content">
+    {{{content}}}
+    <hr />
+    <div>
+        {{localize "foundry-getting-lost.result.rolls"}}: {{formattedRolls}}
+    </div>
+    <div class="fgl-lost-map-container">
+        <div class="fgl-lost-map-wrapper">
+            <img src="{{system.mapImage}}" width="100%" />
+            {{#if lines}}
+                {{#each lines}}
+                    <div class="fgl-lost-map-division {{../linesClass}} vertical" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
+                    <div class="fgl-lost-map-division {{../linesClass}} horizontal" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
+                {{/each}}
+            {{/if}}
+            <div class="fgl-lost-map-result" style="--result-percent: {{percent}}%;--result-top: {{coordinates.top}}%;--result-left: {{coordinates.left}}%"></div>
+        </div>
+    </div>
+</section>

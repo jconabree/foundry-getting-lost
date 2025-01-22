@@ -1,6 +1,8 @@
 import logger from './logger.js';
 import { LostMap } from './models/LostMap.js';
+import { LostMapResult } from './models/LostMapResult.js';
 import LostMapSheet from './sheets/LostMap.js';
+import LostMapResultSheet from './sheets/LostMapResult.js';
 
 class LostMapsHelper {
     init() {
@@ -10,12 +12,19 @@ class LostMapsHelper {
 
     initModel() {
         Object.assign(CONFIG.JournalEntryPage.dataModels, {
-            'foundry-getting-lost.lostMap': LostMap
+            'foundry-getting-lost.lostMap': LostMap,
+            'foundry-getting-lost.lostMapResult': LostMapResult
         });
 
-        DocumentSheetConfig.registerSheet(JournalEntryPage, 'foundry-getting-lost', LostMapSheet, {
+        DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map', LostMapSheet, {
             label: 'Lost Map',
             types: ['foundry-getting-lost.lostMap'],
+            makeDefault: false
+        });
+        
+        DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map-result', LostMapResultSheet, {
+            label: 'Lost Map Result',
+            types: ['foundry-getting-lost.lostMapResult'],
             makeDefault: false
         });
     }

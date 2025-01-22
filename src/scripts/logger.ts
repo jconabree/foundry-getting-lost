@@ -1,5 +1,5 @@
 class Logger {
-    #prefix = 'Getting Lost Helper - ';
+    #prefix = 'Getting Lost Helper';
 
     prefix(message: string) {
         return `${this.#prefix} - ${message}`;

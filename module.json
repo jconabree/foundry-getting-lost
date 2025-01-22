@@ -57,13 +57,16 @@
   "documentTypes": {
     "JournalEntryPage": {
       "lostMap": {
-        "htmlFields": ["flavorText"],
+        "htmlFields": ["text"],
         "filePathFields": {
           "mapImage": ["IMAGE"]
         }
       },
       "lostMapResult": {
-        "htmlFields": ["content"]
+        "htmlFields": ["text"],
+        "filePathFields": {
+          "mapImage": ["IMAGE"]
+        }
       }
     }
   }

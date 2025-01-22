@@ -2,6 +2,7 @@ import { GetDataReturnType, MaybePromise } from '@league-of-foundry-developers/f
 import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
 import { LostMap } from '../models/LostMap.js';
+import { LostMapResult } from '../models/LostMapResult.js';
 
 type LostMapDivisionLine = {
 	percent: number;
@@ -15,6 +16,7 @@ type JournalLostMapPageSheetContext = MaybePromise<GetDataReturnType<JournalPage
 		[key: string]: string;
 	}
 	lines?: LostMapDivisionLine[];
+	runReady: boolean;
 }
 
 export default class JournalLostMapPageSheet extends JournalTextPageSheet {
@@ -66,6 +68,8 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 		);
 
 		this._addDivisionLines(context); 
+
+		context.runReady = this._isRunAvailable(context.system);
   
       	return context;
     }
@@ -108,18 +112,23 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 		context.lines = lines;
 	}
 
+	_isRunAvailable(lostMap: LostMap): boolean {
+		return Boolean(
+			lostMap.divisions &&
+			lostMap.mapImage &&
+			lostMap.rollTableAdjustments?.type
+		);
+	}
+
     /** @inheritDoc */
     activateListeners(jQuery: JQuery) {
       super.activateListeners(jQuery);
-      const [html] = jQuery;
   
     //   html.querySelector('[name="grouping"]')?.addEventListener("change", event => {
     //     this.grouping = (event.target.value === this.document.system.grouping) ? null : event.target.value;
     //     this.object.parent.sheet.render();
     //   });
-      html.querySelectorAll<HTMLButtonElement>("[data-action]").forEach(e => {
-        e.addEventListener('click', this._onAction.bind(this));
-      });
+      jQuery.find<HTMLButtonElement>("[data-action]").on<'click'>('click', this._onAction.bind(this));
     }
   
     /* -------------------------------------------- */
@@ -128,10 +137,67 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
      * Handle performing an action.
      * @param {PointerEvent} event  This triggering click event.
      */
-    async _onAction(event: MouseEvent) {
+    async _onAction(event: JQuery.ClickEvent) {
         logger.log('Action Event', event);
-    //   event.preventDefault();
-    //   const { action } = event.target.dataset;
+
+		event.preventDefault();
+		const { action } = (event.target as HTMLButtonElement).dataset;
+
+		switch (action) {
+			case 'run-map':
+				const lostMap = this.document.system as LostMap;
+
+				if (!this._isRunAvailable(lostMap)) {
+					logger.warn('Map run is unavailable for map', lostMap);
+
+					return;
+				}
+				
+				logger.log('Run the map', event);
+				
+				const roll = await new Roll(`${lostMap.divisions}d20`).roll();
+				const [dice] = roll.dice;
+				const results = dice.results.map(({result}: { result: number; }) => result);
+				logger.log('Rolls: ', results);
+				
+				const journalEntry = this.object.parent as JournalEntry;
+				const resultPageData = {
+					type: 'foundry-getting-lost.lostMapResult',
+					name: `${this.document.name} - Result`,
+					// @ts-ignore
+					system: {
+						name: `${this.document.name} - Result`,
+						mapImage: lostMap.mapImage,
+						divisions: lostMap.divisions,
+						text: {
+							content: this.document.text.content
+						},
+						rollTableAdjustments: lostMap.rollTableAdjustments,
+						rollResult: results
+					},
+					text: this.document.text,
+				};
+				const [resultPage] = await journalEntry.createEmbeddedDocuments(
+					'JournalEntryPage',
+					// @ts-ignore
+					[resultPageData]
+				) as unknown as JournalEntryPage[];
+
+				if (!resultPage) {
+					logger.error('Could not create result page');
+
+					return;
+				}
+
+				const pages = journalEntry.pages.filter(page => page.id !== resultPage.id);
+				pages.push(resultPage);
+				await journalEntry.update({ pages: pages.map(page => page.id) });
+
+				await Journal.show(resultPage);
+				
+				break;
+			default:
+		}
     }
 }
 

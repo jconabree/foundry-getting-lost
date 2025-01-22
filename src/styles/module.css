@@ -1,0 +1,51 @@
+.fgl-lost-map-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.fgl-lost-map-division {
+    display: none;
+    position: absolute;
+    background-color: var(--division-color);
+    --division-size: 2px;
+    
+    &.horizontal {
+        left: 0;
+        top: var(--division-percent);
+        width: 100%;
+        height: var(--division-size);
+        transform:translateY(-50%);
+    }
+
+    &.vertical {
+        left: var(--division-percent);
+        top: 0;
+        width: var(--division-size);
+        height: 100%;
+        transform:translateX(-50%);
+    }
+}
+
+.fgl-lost-map-division.shown {
+    display: block;
+}
+
+.fgl-lost-map-result {
+    background-color: rgba(255,0,255,0.4);
+    width: var(--result-percent);
+    height: var(--result-percent);
+    position: absolute;
+    top: var(--result-top);;
+    left: var(--result-left);
+}
+
+.fgl-lost-map-label {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+}
+
+.fgl-lost-map-value {
+    font-weight: 400;
+}

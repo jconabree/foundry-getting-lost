@@ -4,24 +4,33 @@
 </header>
 {{/if}}
 <section class="journal-page-content">
-    <div class="">
-        <div>{{localize "foundry-getting-lost.sheet.mapImage"}}</div>
+    {{#if runReady}}
+        <div class="fgl-lost-map-run-wrapper">
+            <button type="button" class="fgl-lost-map-run" data-action="run-map">
+                {{localize "foundry-getting-lost.run"}}
+            </button>
+        </div>
+        <hr />
+    {{/if}}
+    <div class="fgl-lost-map-container">
+        <div class="fgl-lost-map-label">{{localize "foundry-getting-lost.sheet.mapImage"}}</div>
         {{#if system.mapImage}}
-            <div style="position:relative;width:100%;">
+            <div class="fgl-lost-map-wrapper">
                 <img src="{{system.mapImage}}" width="100%" />
                 {{#if lines}}
                     {{#each lines}}
-                        <div style="position:absolute;left:{{percent}}%;top:0;width:2px;height:100%;transform:translateX(-50%);background-color:{{color}};"></div>
-                        <div style="position:absolute;left:0;top:{{percent}}%;width:100%;height:2px;transform:translateY(-50%);background-color:{{color}};"></div>
+                        <div class="fgl-lost-map-division vertical" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
+                        <div class="fgl-lost-map-division horizontal" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
                     {{/each}}
                 {{/if}}
             </div>
         {{else}}
-            Not Set
+            <div>{{localize "foundry-getting-lost.sheet.notSet"}}</div>
         {{/if}}
-        <div>{{localize "foundry-getting-lost.sheet.divisions"}}: {{system.divisions}}</div>
+        <div class="fgl-lost-map-label">{{localize "foundry-getting-lost.sheet.divisions"}}: <span class="fgl-lost-map-value">{{system.divisions}}</span></div>
     </div>
-    <div class="">
+    <hr />
+    <div class="fgl-lost-map-label">
         {{ localize "foundry-getting-lost.sheet.flavorText" }}
     </div>
     {{{editor.content}}}

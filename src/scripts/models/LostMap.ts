@@ -4,7 +4,7 @@ declare global {
 	}
 }
 
-export class LostMap extends foundry.abstract.TypeDataModel<LostMapSchema, foundry.documents.BaseJournalEntry> {
+export class LostMap<Schema extends LostMapSchema = LostMapSchema> extends foundry.abstract.TypeDataModel<Schema, foundry.documents.BaseJournalEntry> {
 	static MAX_DIVISIONS = 5;
 	static MIN_DIVISIONS = 1;
 
