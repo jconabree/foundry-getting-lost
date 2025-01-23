@@ -1,5 +1,8 @@
 {
     "TYPES.JournalEntryPage.foundry-getting-lost.lostMap": "Lost Map",
+    "TYPES.JournalEntryPage.foundry-getting-lost.lostMapResult": "Lost Map Result",
+    "foundry-getting-lost.lostMap": "Lost Map",
+    "foundry-getting-lost.lostMapResult": "Lost Map Result",
     "foundry-getting-lost.run": "Run Lost Map",
     "foundry-getting-lost.sheet.title": "Lost Map Configuration",
     "foundry-getting-lost.sheet.flavorText": "Flavor Text",

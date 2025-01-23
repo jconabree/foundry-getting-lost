@@ -2,7 +2,6 @@ import { GetDataReturnType, MaybePromise } from '@league-of-foundry-developers/f
 import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
 import { LostMap } from '../models/LostMap.js';
-import { LostMapResult } from '../models/LostMapResult.js';
 
 type LostMapDivisionLine = {
 	percent: number;
@@ -134,8 +133,6 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
      * @param {PointerEvent} event  This triggering click event.
      */
     async _onAction(event: JQuery.ClickEvent) {
-        logger.log('Action Event', event);
-
 		event.preventDefault();
 		const { action } = (event.target as HTMLButtonElement).dataset;
 
@@ -148,13 +145,10 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
 					return;
 				}
-				
-				logger.log('Run the map', event);
-				
+								
 				const roll = await new Roll(`${lostMap.divisions}d20`).roll();
 				const [dice] = roll.dice;
 				const results = dice.results.map(({result}: { result: number; }) => result);
-				logger.log('Rolls: ', results);
 				
 				const journalEntry = this.object.parent as JournalEntry;
 				const resultPageData = {
@@ -168,7 +162,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 						rollTableAdjustments: lostMap.rollTableAdjustments,
 						rollResult: results
 					},
-					sort: journalEntry.pages.entries.length + 1,
+					sort: (Array.from(journalEntry.pages.values()).pop() as JournalEntryPage).sort + 10000,
 					text: this.document.text,
 				};
 				const [resultPage] = await journalEntry.createEmbeddedDocuments(

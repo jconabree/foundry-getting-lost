@@ -1,7 +1,6 @@
 import { GetDataReturnType, MaybePromise } from '@league-of-foundry-developers/fvtt-types/utils';
 import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
-import { LostMap } from '../models/LostMap.js';
 import { LostMapResult } from '../models/LostMapResult.js';
 
 type LostMapDivisionLine = {
@@ -149,8 +148,6 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
      * @param {PointerEvent} event  This triggering click event.
      */
     async _onAction(event: JQuery.ClickEvent) {
-        logger.log('Action Event', event);
-
 		event.preventDefault();
 		const $button = $(event.target).closest('button');
 		const action = $button.data('action');

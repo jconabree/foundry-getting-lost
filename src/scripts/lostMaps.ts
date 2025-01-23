@@ -19,13 +19,15 @@ class LostMapsHelper {
         DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map', LostMapSheet, {
             label: 'Lost Map',
             types: ['foundry-getting-lost.lostMap'],
-            makeDefault: false
+            canConfigure: false,
+            makeDefault: true
         });
         
         DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map-result', LostMapResultSheet, {
             label: 'Lost Map Result',
             types: ['foundry-getting-lost.lostMapResult'],
-            makeDefault: false
+            makeDefault: true,
+            canConfigure: false,
         });
     }
 
