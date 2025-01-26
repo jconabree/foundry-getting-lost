@@ -37,7 +37,7 @@ class LostMapsHelper {
             // TODO check if current user is GM
 
             if (app.tabName === 'journals') {
-                this._addRolltableButton(app, html);
+                // this._addRolltableButton(app, html);
             }
         });
     }

@@ -19,32 +19,35 @@ If you would like a specific version of this package, be sure to change `latest`
 
 ### Managing Lost Maps
 
-Click the "Lost Maps" button under the Roll Tables section.
-
-Here you'll be able to see and manage existing lost maps and create new ones.
+Lost maps are a variant of Journal Pages
 
 ### Creating Lost Map
-Click "Create New" in the Lost Maps window. Here you'll enter the map's information
-**[TODO Add image walkthrough]**
+1. Create a new Journal. Recommended to create a new folder for your maps and create a Journal for each lost map.
+2. Add a new page to the journal with the "Lost Map" page type.
+3. Edit the page with your values
 
+Options:
 - Name
 - Set map Image
 - Set how many divisions there are (default 3, minimum 1, maximum 6)
-- Adjust roll table
-  - Evenly disperse odds or adjust ranges
+- Flavor text
 
 ### Using the Lost Map
-There are three ways you can trigger getting lost.
-1. In the Manage Lost Maps area there's a "Run" button
-2. Through the chat by entering **[TODO add command details]**
-3. The lost map can be added to the hotbar **[TODO details how]**
+Once your map is configured, you can click the "Run Map" button. This will:
+- Request dice rolls based on the number of divisions
+- Create a new page in the journal with the results
 
-These will all output the map into the chat for everyone to see. The output map will also be added to a new handout for future reference
+### Settings
+- "Show divisions in results"
+  - Display the divisions by default in result pages. When unchecked, you can still click the "Show divisions" inside of the result page to show them.
 
 ## Development
 
 ### Installation
 ```
 npm install
+# Build
 npm run build:all
+# Or Watch
+npm run watch:all
 ```
