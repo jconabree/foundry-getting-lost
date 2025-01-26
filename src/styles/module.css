@@ -27,6 +27,13 @@
     margin-bottom: 0.625em;
 }
 
+.fgl-button.inline-action {
+    line-height: 1.25rem;
+    font-size: 0.75rem;
+    margin-left: 0.75rem;
+    margin-bottom: 0;
+}
+
 .fgl-button > span.inactive-text {
     display: block;
 }
@@ -66,7 +73,7 @@
     }
 }
 
-.fgl-lost-map-division.shown {
+.fgl-lost-map-division.visible {
     display: block;
 }
 

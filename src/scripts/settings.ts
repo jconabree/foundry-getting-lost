@@ -1,6 +1,6 @@
 declare global {
     interface SettingConfig {
-        'foundry-getting-lost.your-config': string;
+        'foundry-getting-lost.results-show-divisions': boolean;
     }
 }
 
@@ -26,16 +26,17 @@ class Settings {
      * @public
      */
     init() {
-        // this.registerSetting(
-        //     'your-config',
-        //     {
-        //         name: 'Your Config Name',
-        //         scope: 'world',
-        //         config: true,
-        //         type: Boolean,
-        //         default: false
-        //     }
-        // );
+        this.registerSetting(
+            'results-show-divisions',
+            {
+                name: 'Show divisions in results',
+                hint: 'In result pages, divisions will be active by default',
+                scope: 'world',
+                config: true,
+                type: Boolean,
+                default: true
+            }
+        );
     }
 
     getValue(key: ClientSettings.Key) {

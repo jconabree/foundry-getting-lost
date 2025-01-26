@@ -134,7 +134,8 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
      */
     async _onAction(event: JQuery.ClickEvent) {
 		event.preventDefault();
-		const { action } = (event.target as HTMLButtonElement).dataset;
+		const $button = $(event.target).closest('button');
+		const action = $button.data('action');
 
 		switch (action) {
 			case 'run-map':
@@ -179,6 +180,11 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
 				await Journal.show(resultPage);
 				
+				break;
+			case 'toggle-divisions':
+				$button.toggleClass('active');
+				$button.closest('.journal-page-content').find('.fgl-lost-map-division').toggleClass('visible');
+
 				break;
 			default:
 		}

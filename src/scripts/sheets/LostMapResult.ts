@@ -2,6 +2,7 @@ import { GetDataReturnType, MaybePromise } from '@league-of-foundry-developers/f
 import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
 import { LostMapResult } from '../models/LostMapResult.js';
+import settings from '../settings.js';
 
 type LostMapDivisionLine = {
 	percent: number;
@@ -18,7 +19,7 @@ type JournalLostMapResultPageSheetContext = MaybePromise<GetDataReturnType<Journ
 	system: LostMapResult;
 	content: string;
 	lines: LostMapDivisionLine[];
-	linesClass: string;
+	linesVisible: boolean;
 	formattedRolls: string;
 	percent: number;
 	coordinates: {
@@ -64,7 +65,7 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
 		})
 
 		this._addDivisionLines(context);
-		context.linesClass = true ? 'shown' : '';
+		context.linesVisible = Boolean(settings.getValue('results-show-divisions'));
 
 		const rolls = context.system.rollResult as number[]
 		const coordinates = this._getCoordinatesFromRolls(rolls);
@@ -155,7 +156,7 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
 		switch (action) {
 			case 'toggle-divisions':
 				$button.toggleClass('active');
-				$button.closest('.journal-page-content').find('.fgl-lost-map-division').toggleClass('shown');
+				$button.closest('.journal-page-content').find('.fgl-lost-map-division').toggleClass('visible');
 
 				break;
 			default:

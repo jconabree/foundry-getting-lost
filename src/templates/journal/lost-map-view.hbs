@@ -27,7 +27,13 @@
         {{else}}
             <div>{{localize "foundry-getting-lost.sheet.notSet"}}</div>
         {{/if}}
-        <div class="fgl-lost-map-label">{{localize "foundry-getting-lost.sheet.divisions"}}: <span class="fgl-lost-map-value">{{system.divisions}}</span></div>
+        <div class="fgl-lost-map-label">
+            {{localize "foundry-getting-lost.sheet.divisions"}}: <span class="fgl-lost-map-value">{{system.divisions}}</span>
+            <button class="fgl-button inline-action" data-action="toggle-divisions">
+                <span class="active-text">{{localize "foundry-getting-lost.result.hideDivisions"}}</span>
+                <span class="inactive-text">{{localize "foundry-getting-lost.result.showDivisions"}}</span>
+            </button>
+        </div>
     </div>
     <hr />
     <div class="fgl-lost-map-label">

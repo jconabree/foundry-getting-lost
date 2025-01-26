@@ -12,7 +12,7 @@
         {{localize "foundry-getting-lost.result.rolls"}}: {{formattedRolls}}
     </div>
     <div class="fgl-actions-row">
-        <button class="fgl-button active" data-action="toggle-divisions">
+        <button class="fgl-button {{#if linesVisible}}active{{/if}}" data-action="toggle-divisions">
             <span class="active-text">{{localize "foundry-getting-lost.result.hideDivisions"}}</span>
             <span class="inactive-text">{{localize "foundry-getting-lost.result.showDivisions"}}</span>
         </button>
@@ -22,8 +22,8 @@
             <img src="{{system.mapImage}}" width="100%" />
             {{#if lines}}
                 {{#each lines}}
-                    <div class="fgl-lost-map-division {{../linesClass}} vertical" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
-                    <div class="fgl-lost-map-division {{../linesClass}} horizontal" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
+                    <div class="fgl-lost-map-division {{#if ../linesVisible}}visible{{/if}} vertical" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
+                    <div class="fgl-lost-map-division {{#if ../linesVisible}}visible{{/if}} horizontal" style="--division-percent:{{percent}}%;--division-color:{{color}};"></div>
                 {{/each}}
             {{/if}}
             <div class="fgl-lost-map-result" style="--result-percent: {{percent}}%;--result-top: {{coordinates.top}}%;--result-left: {{coordinates.left}}%"></div>
