@@ -60,7 +60,7 @@ Per the strict upgrade rule, touching a file means bringing it to standard first
 - `src/scripts/settings.ts`: `name`/`hint` hard-coded English -> `game.i18n` keys added to `src/languages/en.json`; `// @ts-ignore` on `register` -> typed config.
 - `src/templates/journal/*.hbs`: `{{{content}}}` / `{{{editor.content}}}` lack the adjacent "why safe" comment; `{{> journalEntryPageHeader }}` and `{{ editor }}`/`cssClass` are V1 page-sheet idioms -> comment them now; replace with AppV2 partials during the sheet migration.
 - `src/styles/module.css`: bare `.fgl-*` selectors are prefixed but not under one root class -> scope under a module root class when the sheets are migrated.
-- `module.json`: `compatibility.minimum` 12 (needs 13), `library` is the string `"false"` (needs boolean), dnd5e system relationship present (module is system-agnostic, remove it) -> fixed in the follow-up manifest commit, not here.
+- `module.json`: `compatibility.minimum` is 13, `library` is boolean `false`, and `relationships.systems` is empty because the module is system-agnostic. Do not add a system requirement.
 - `package.json`: copy-paste fields (`keywords: ["Foundry VTT", "WLED"]`, `description`, `main: dist/module.js` which does not exist) -> correct them; `@league-of-foundry-developers/fvtt-types` is `github:...#main` (unpinned) -> pin to a commit hash. Ask before changing dependencies.
 
 ## Verification checklist
@@ -87,8 +87,8 @@ Manual in Foundry (list for the user; never claim they pass until the user confi
 
 - Edit `src/`, never `dist/`. `dist/` is git-ignored build output; the release CI rebuilds it.
 - The model allows 1-5 divisions (`LostMap.MAX_DIVISIONS = 5`), but the language file has a "6 division" label and `lineColors` has 6 colors. A 6-division map is not currently reachable from the sheet; do not assume it works.
-- System-agnostic is the goal (spec decision D10), but both sheets add the `dnd5e2-journal` CSS class unconditionally, so on other systems it is a dead class and the dnd5e styling is untested. Follow-up: apply it only when `game.system.id === "dnd5e"`, and drop the dnd5e relationship from `module.json`.
-- `module.json` `version` is currently hard-coded `1.0.0` on `main`. The release workflow expects the `#{VERSION}#` token; do not "fix" it ad hoc, a manifest task restores it.
+- System-agnostic is the goal (spec decision D10), but both sheets add the `dnd5e2-journal` CSS class unconditionally, so on other systems it is a dead class and the dnd5e styling is untested. Follow-up: apply it only when `game.system.id === "dnd5e"`.
+- `module.json` `version` must stay the `#{VERSION}#` token; the release workflow fills it. Do not hard-code a version.
 - `package.json` also uses `#{VERSION}#`, so npm prints that string as the version. This is expected.
 - `LostMapResult` extends `LostMap` and inherits its schema; schema changes affect both subtypes and existing documents. Changing `defineSchema` or field names needs a migration plan; ask first.
 - `rollTableAdjustments` is stored as a JSON string but nothing consumes it beyond a truthiness check in `_isRunAvailable`.
