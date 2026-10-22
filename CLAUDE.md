@@ -14,10 +14,12 @@ TypeScript, compiled with `tsc` to `dist/`. Target: Foundry v13 minimum, v14 ver
 ## Commands
 
 - `npm ci`: install dependencies.
+- `npm run check`: lint (ESLint, type-aware), Prettier check, JSON validation of `module.json` and `src/languages/en.json`, and `tsc --noEmit`. Must exit 0 before every commit; CI runs the same command.
+- `npm run lint:fix` / `npm run format`: auto-fix lint and formatting.
 - `npm run build:all`: clean `dist/`, compile `src/scripts` via `tsc`, copy other `src/*` folders into `dist/`.
 - `npm run watch:all`: `tsc --watch` plus static-file copy on change.
-- `npx tsc --noEmit`: type check only. Must pass (`strict` is on).
-- No test suite (`npm test` is a placeholder that fails) and no linter.
+- `npm run typecheck` (`tsc --noEmit`): type check only. Must pass (`strict` is on).
+- No test suite (`npm test` is a placeholder that fails).
 
 ## Layout
 
@@ -51,24 +53,25 @@ Per the strict upgrade rule, touching a file means bringing it to standard first
 - `src/scripts/sheets/LostMap.ts`, `src/scripts/sheets/LostMapResult.ts`: ApplicationV1 `JournalTextPageSheet` with `defaultOptions`, `getData`, `activateListeners`, jQuery (`$(...)`, `.find().on()`) -> `foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet` (AppV2, `HandlebarsApplicationMixin`, `_prepareContext`, `static DEFAULT_OPTIONS.actions`, DOM APIs). Ask. Verify the exact class names against foundryvtt.com/api/v14/ first.
 - Same sheets: global `TextEditor.enrichHTML` -> `foundry.applications.ux.TextEditor.implementation.enrichHTML`; drop the `async: true` option.
 - Same sheets: `_addDivisionLines` and the `lineColors` palette are duplicated -> one shared module. Hard-coded hex colors also conflict with the CSS rule on theme variables.
-- Same sheets: `// @ts-ignore` comments and `any`-style casts -> proper types or a justifying comment each.
+- Same sheets, `src/scripts/settings.ts`: `// @ts-ignore` comments (`ban-ts-comment`) and the unsafe-`any` findings they cause (`no-unsafe-argument`, `no-unsafe-member-access`, `no-unsafe-assignment`, e.g. around `TextEditor.enrichHTML` and `$(event.target)`) -> proper types, or `@ts-expect-error` with a description each.
+- Same sheets: `no-misused-promises` on the V1 `activateListeners` jQuery click handler (async `_onAction`) -> disappears with the AppV2 `actions` migration.
 - `src/scripts/lostMaps.ts`: `renderSidebarTab` hook with jQuery `html` argument and `app.tabName` (V1 sidebar) -> v13+ render hook for the Journal directory (`renderJournalDirectory`) taking an `HTMLElement`. Verify the hook name in the v14 docs.
 - `src/scripts/lostMaps.ts`: dead `_addRolltableButton` uses `innerHTML` and `html.find`, with a `TODO` lacking an issue ref -> delete it, or rebuild with `createElement`/`textContent` and `TODO(#n)`.
 - `src/scripts/lostMaps.ts`: `DocumentSheetConfig.registerSheet(JournalEntryPage, ...)` and bare `JournalEntryPage` global -> `foundry.applications.apps.DocumentSheetConfig.registerSheet(...)`. Verify in the v14 docs.
 - `src/scripts/module.ts`: `CONFIG.debug.hooks = true` at import time (debug logging left on) -> remove. Registering the `init` hook is the only allowed import-time effect.
-- `src/scripts/logger.ts`: wraps `console.*` (allowed) but uses `any[]` with no justification and a hard-coded prefix -> add the comment or use `unknown[]`; derive the prefix from the module id.
+- `src/scripts/logger.ts`: the module logger wraps `console.*`, so its six `no-console` calls carry legacy suppressions (the only sanctioned `console` use; keep them until lint config offers a logger exemption). It still has a hard-coded prefix -> derive it from the module id.
 - `src/scripts/settings.ts`: `name`/`hint` hard-coded English -> `game.i18n` keys added to `src/languages/en.json`; `// @ts-ignore` on `register` -> typed config.
 - `src/templates/journal/*.hbs`: `{{{content}}}` / `{{{editor.content}}}` lack the adjacent "why safe" comment; `{{> journalEntryPageHeader }}` and `{{ editor }}`/`cssClass` are V1 page-sheet idioms -> comment them now; replace with AppV2 partials during the sheet migration.
 - `src/styles/module.css`: bare `.fgl-*` selectors are prefixed but not under one root class -> scope under a module root class when the sheets are migrated.
-- `package.json`: copy-paste fields (`keywords: ["Foundry VTT", "WLED"]`, `description`, `main: dist/module.js` which does not exist) -> correct them; `@league-of-foundry-developers/fvtt-types` is `github:...#main` (unpinned) -> pin to a commit hash. Ask before changing dependencies.
+- `package.json`: copy-paste fields (`keywords: ["Foundry VTT", "WLED"]`, `description`, `main: dist/module.js` which does not exist) -> correct them. `@league-of-foundry-developers/fvtt-types` is pinned to a commit hash (the one previously locked); bumping it is migration-sized, ask first.
 
 ## Verification checklist
 
 Static (report actual output):
 
-1. `npx tsc --noEmit` passes.
+1. `npm run check` exits 0 (lint, format, JSON, `tsc --noEmit`).
 2. `npm run build:all` exits 0; `dist/scripts/module.js`, `dist/styles/module.css`, `dist/languages/en.json`, `dist/templates/journal/*.hbs` exist.
-3. `module.json` and `src/languages/en.json` parse as JSON. Every new i18n key is in the language file.
+3. Every new i18n key is in the language file (JSON validity is covered by `npm run check`).
 
 Manual in Foundry (list for the user; never claim they pass until the user confirms):
 
