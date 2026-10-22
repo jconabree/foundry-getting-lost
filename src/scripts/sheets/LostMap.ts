@@ -4,26 +4,28 @@ import ModuleTemplate from '../template.js';
 import { LostMap } from '../models/LostMap.js';
 
 type LostMapDivisionLine = {
-	percent: number;
-	color: string;
+    percent: number;
+    color: string;
 };
 
-type JournalLostMapPageSheetContext = MaybePromise<GetDataReturnType<JournalPageSheet.JournalPageSheetData>> & {
-	document: LostMap & { system: LostMap };
-	system: LostMap;
-	AVAILABLE_DIVISIONS: {
-		[key: string]: string;
-	}
-	lines?: LostMapDivisionLine[];
-	runReady: boolean;
-}
+type JournalLostMapPageSheetContext = MaybePromise<
+    GetDataReturnType<JournalPageSheet.JournalPageSheetData>
+> & {
+    document: LostMap & { system: LostMap };
+    system: LostMap;
+    AVAILABLE_DIVISIONS: {
+        [key: string]: string;
+    };
+    lines?: LostMapDivisionLine[];
+    runReady: boolean;
+};
 
 export default class JournalLostMapPageSheet extends JournalTextPageSheet {
     static get defaultOptions() {
         const options = foundry.utils.mergeObject(super.defaultOptions, {
-          submitOnChange: true,
-          width: 700,
-		  rollTableAdjustments: {}
+            submitOnChange: true,
+            width: 700,
+            rollTableAdjustments: {},
         });
         options.classes.push('lost-map', 'text dnd5e2-journal');
 
@@ -31,166 +33,169 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
     }
 
     get template() {
-      	return ModuleTemplate._getPath(`journal/lost-map-${this.isEditable ? "edit" : "view"}.hbs`);
+        return ModuleTemplate._getPath(`journal/lost-map-${this.isEditable ? 'edit' : 'view'}.hbs`);
     }
 
-	static get format() {
-		return CONST.JOURNAL_ENTRY_PAGE_FORMATS.HTML;
-	}
+    static get format() {
+        return CONST.JOURNAL_ENTRY_PAGE_FORMATS.HTML;
+    }
 
     async getData(options: JournalLostMapPageSheetOptions) {
-		const context = await super.getData(options) as JournalLostMapPageSheetContext;
-		// @ts-ignore
-		context.system = context.document.system;
-		//   context.embedRendering = this.options.embedRendering ?? false;
-		//   context.title = context.data.title.value;//Object.fromEntries(Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1]));
-	
-		// @ts-ignore
-		context.editor = {
-			engine: "prosemirror",
-			collaborate: true,
-			// @ts-ignore
-			content: await TextEditor.enrichHTML(context.document.text.content, {
-				relativeTo: this.object,
-				secrets: this.object.isOwner,
-				// @ts-ignore
-				async: true
-			})
-		}
+        const context = (await super.getData(options)) as JournalLostMapPageSheetContext;
+        // @ts-ignore
+        context.system = context.document.system;
+        //   context.embedRendering = this.options.embedRendering ?? false;
+        //   context.title = context.data.title.value;//Object.fromEntries(Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1]));
 
-		// @ts-ignore
-		context.AVAILABLE_DIVISIONS = Object.fromEntries(
-			Array.from({ length: LostMap.MAX_DIVISIONS }).map((_, index) => [
-				(index + 1).toString(),
-				`foundry-getting-lost.sheet.divisionOption${index + 1}`
-			])
-		);
+        // @ts-ignore
+        context.editor = {
+            engine: 'prosemirror',
+            collaborate: true,
+            // @ts-ignore
+            content: await TextEditor.enrichHTML(context.document.text.content, {
+                relativeTo: this.object,
+                secrets: this.object.isOwner,
+                // @ts-ignore
+                async: true,
+            }),
+        };
 
-		this._addDivisionLines(context); 
+        // @ts-ignore
+        context.AVAILABLE_DIVISIONS = Object.fromEntries(
+            Array.from({ length: LostMap.MAX_DIVISIONS }).map((_, index) => [
+                (index + 1).toString(),
+                `foundry-getting-lost.sheet.divisionOption${index + 1}`,
+            ]),
+        );
 
-		context.runReady = this._isRunAvailable(context.system);
-  
-      	return context;
+        this._addDivisionLines(context);
+
+        context.runReady = this._isRunAvailable(context.system);
+
+        return context;
     }
 
-	_addDivisionLines(context: JournalLostMapPageSheetContext) {
-		const divisions = context.system.divisions;
-		if (!divisions) {
-			return;
-		}
+    _addDivisionLines(context: JournalLostMapPageSheetContext) {
+        const divisions = context.system.divisions;
+        if (!divisions) {
+            return;
+        }
 
-		const lineColors = [
-			"#FF5733", // Vibrant Red-Orange
-			"#33FF57", // Bright Green
-			"#3357FF", // Strong Blue
-			"#F7DC6F", // Warm Yellow
-			"#AF7AC5", // Soft Purple
-			"#48C9B0", // Cool Teal
-		];
+        const lineColors = [
+            '#FF5733', // Vibrant Red-Orange
+            '#33FF57', // Bright Green
+            '#3357FF', // Strong Blue
+            '#F7DC6F', // Warm Yellow
+            '#AF7AC5', // Soft Purple
+            '#48C9B0', // Cool Teal
+        ];
 
-		const lines = Array.from({ length: divisions })
-			.reduce((collectedLines: LostMapDivisionLine[], _, index) => {
-				const numberOfLines = Math.pow(2, (index + 1))
-				const basePercent = 100 / numberOfLines;
-				const color = lineColors[index];
+        const lines = Array.from({ length: divisions }).reduce(
+            (collectedLines: LostMapDivisionLine[], _, index) => {
+                const numberOfLines = Math.pow(2, index + 1);
+                const basePercent = 100 / numberOfLines;
+                const color = lineColors[index];
 
-				for (let i = 1; i <= numberOfLines; i++) {
-					if (i % 2 === 0) {
-						continue;
-					}
+                for (let i = 1; i <= numberOfLines; i++) {
+                    if (i % 2 === 0) {
+                        continue;
+                    }
 
-					collectedLines.push({
-						color,
-						percent: basePercent * i
-					});
-				}
+                    collectedLines.push({
+                        color,
+                        percent: basePercent * i,
+                    });
+                }
 
-				return collectedLines;
-			}, []);
+                return collectedLines;
+            },
+            [],
+        );
 
-		context.lines = lines;
-	}
+        context.lines = lines;
+    }
 
-	_isRunAvailable(lostMap: LostMap): boolean {
-		return Boolean(
-			lostMap.divisions &&
-			lostMap.mapImage &&
-			lostMap.rollTableAdjustments?.type
-		);
-	}
+    _isRunAvailable(lostMap: LostMap): boolean {
+        return Boolean(lostMap.divisions && lostMap.mapImage && lostMap.rollTableAdjustments?.type);
+    }
 
     /** @inheritDoc */
     activateListeners(jQuery: JQuery) {
-      super.activateListeners(jQuery);
-  
-      jQuery.find<HTMLButtonElement>("[data-action]").on<'click'>('click', this._onAction.bind(this));
+        super.activateListeners(jQuery);
+
+        jQuery
+            .find<HTMLButtonElement>('[data-action]')
+            .on<'click'>('click', this._onAction.bind(this));
     }
-  
+
     /* -------------------------------------------- */
-  
+
     /**
      * Handle performing an action.
      * @param {PointerEvent} event  This triggering click event.
      */
     async _onAction(event: JQuery.ClickEvent) {
-		event.preventDefault();
-		const $button = $(event.target).closest('button');
-		const action = $button.data('action');
+        event.preventDefault();
+        const $button = $(event.target).closest('button');
+        const action = $button.data('action');
 
-		switch (action) {
-			case 'run-map':
-				const lostMap = this.document.system as LostMap;
+        switch (action) {
+            case 'run-map':
+                const lostMap = this.document.system as LostMap;
 
-				if (!this._isRunAvailable(lostMap)) {
-					logger.warn('Map run is unavailable for map', lostMap);
+                if (!this._isRunAvailable(lostMap)) {
+                    logger.warn('Map run is unavailable for map', lostMap);
 
-					return;
-				}
-								
-				const roll = await new Roll(`${lostMap.divisions}d20`).roll();
-				const [dice] = roll.dice;
-				const results = dice.results.map(({result}: { result: number; }) => result);
-				
-				const journalEntry = this.object.parent as JournalEntry;
-				const resultPageData = {
-					type: 'foundry-getting-lost.lostMapResult',
-					name: `${this.document.name} - Result`,
-					// @ts-ignore
-					system: {
-						name: `${this.document.name} - Result`,
-						mapImage: lostMap.mapImage,
-						divisions: lostMap.divisions,
-						rollTableAdjustments: lostMap.rollTableAdjustments,
-						rollResult: results
-					},
-					sort: (Array.from(journalEntry.pages.values()).pop() as JournalEntryPage).sort + 10000,
-					text: this.document.text,
-				};
-				const [resultPage] = await journalEntry.createEmbeddedDocuments(
-					'JournalEntryPage',
-					// @ts-ignore
-					[resultPageData]
-				) as unknown as JournalEntryPage[];
+                    return;
+                }
 
-				if (!resultPage) {
-					logger.error('Could not create result page');
+                const roll = await new Roll(`${lostMap.divisions}d20`).roll();
+                const [dice] = roll.dice;
+                const results = dice.results.map(({ result }: { result: number }) => result);
 
-					return;
-				}
+                const journalEntry = this.object.parent as JournalEntry;
+                const resultPageData = {
+                    type: 'foundry-getting-lost.lostMapResult',
+                    name: `${this.document.name} - Result`,
+                    // @ts-ignore
+                    system: {
+                        name: `${this.document.name} - Result`,
+                        mapImage: lostMap.mapImage,
+                        divisions: lostMap.divisions,
+                        rollTableAdjustments: lostMap.rollTableAdjustments,
+                        rollResult: results,
+                    },
+                    sort:
+                        (Array.from(journalEntry.pages.values()).pop() as JournalEntryPage).sort +
+                        10000,
+                    text: this.document.text,
+                };
+                const [resultPage] = (await journalEntry.createEmbeddedDocuments(
+                    'JournalEntryPage',
+                    // @ts-ignore
+                    [resultPageData],
+                )) as unknown as JournalEntryPage[];
 
-				await Journal.show(resultPage);
-				
-				break;
-			case 'toggle-divisions':
-				$button.toggleClass('active');
-				$button.closest('.journal-page-content').find('.fgl-lost-map-division').toggleClass('visible');
+                if (!resultPage) {
+                    logger.error('Could not create result page');
 
-				break;
-			default:
-		}
+                    return;
+                }
+
+                await Journal.show(resultPage);
+
+                break;
+            case 'toggle-divisions':
+                $button.toggleClass('active');
+                $button
+                    .closest('.journal-page-content')
+                    .find('.fgl-lost-map-division')
+                    .toggleClass('visible');
+
+                break;
+            default:
+        }
     }
 }
 
-interface JournalLostMapPageSheetOptions extends JournalPageSheet.Options {
-
-}
+interface JournalLostMapPageSheetOptions extends JournalPageSheet.Options {}

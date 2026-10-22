@@ -55,13 +55,13 @@
     position: absolute;
     background-color: var(--division-color);
     --division-size: 2px;
-    
+
     &.horizontal {
         left: 0;
         top: var(--division-percent);
         width: 100%;
         height: var(--division-size);
-        transform:translateY(-50%);
+        transform: translateY(-50%);
     }
 
     &.vertical {
@@ -69,7 +69,7 @@
         top: 0;
         width: var(--division-size);
         height: 100%;
-        transform:translateX(-50%);
+        transform: translateX(-50%);
     }
 }
 
@@ -78,11 +78,11 @@
 }
 
 .fgl-lost-map-result {
-    background-color: rgba(255,0,255,0.4);
+    background-color: rgba(255, 0, 255, 0.4);
     width: var(--result-percent);
     height: var(--result-percent);
     position: absolute;
-    top: var(--result-top);;
+    top: var(--result-top);
     left: var(--result-left);
 }
 
