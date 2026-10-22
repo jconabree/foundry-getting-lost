@@ -42,24 +42,30 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
     async getData(options: JournalLostMapPageSheetOptions) {
         const context = (await super.getData(options)) as JournalLostMapPageSheetContext;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
         // @ts-ignore
         context.system = context.document.system;
         //   context.embedRendering = this.options.embedRendering ?? false;
         //   context.title = context.data.title.value;//Object.fromEntries(Array.fromRange(4, 1).map(n => [`level${n}`, context.data.title.level + n - 1]));
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
         // @ts-ignore
         context.editor = {
             engine: 'prosemirror',
             collaborate: true,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
             // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, no-restricted-globals -- legacy: see CLAUDE.md "Known legacy patterns"
             content: await TextEditor.enrichHTML(context.document.text.content, {
                 relativeTo: this.object,
                 secrets: this.object.isOwner,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
                 // @ts-ignore
                 async: true,
             }),
         };
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
         // @ts-ignore
         context.AVAILABLE_DIVISIONS = Object.fromEntries(
             Array.from({ length: LostMap.MAX_DIVISIONS }).map((_, index) => [
@@ -125,6 +131,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
 
         jQuery
             .find<HTMLButtonElement>('[data-action]')
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises -- legacy: see CLAUDE.md "Known legacy patterns"
             .on<'click'>('click', this._onAction.bind(this));
     }
 
@@ -136,11 +143,13 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
      */
     async _onAction(event: JQuery.ClickEvent) {
         event.preventDefault();
+        // eslint-disable-next-line no-restricted-globals -- legacy: see CLAUDE.md "Known legacy patterns"
         const $button = $(event.target).closest('button');
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- legacy: see CLAUDE.md "Known legacy patterns"
         const action = $button.data('action');
 
         switch (action) {
-            case 'run-map':
+            case 'run-map': {
                 const lostMap = this.document.system as LostMap;
 
                 if (!this._isRunAvailable(lostMap)) {
@@ -157,6 +166,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
                 const resultPageData = {
                     type: 'foundry-getting-lost.lostMapResult',
                     name: `${this.document.name} - Result`,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
                     // @ts-ignore
                     system: {
                         name: `${this.document.name} - Result`,
@@ -172,6 +182,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
                 };
                 const [resultPage] = (await journalEntry.createEmbeddedDocuments(
                     'JournalEntryPage',
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
                     // @ts-ignore
                     [resultPageData],
                 )) as unknown as JournalEntryPage[];
@@ -185,6 +196,7 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
                 await Journal.show(resultPage);
 
                 break;
+            }
             case 'toggle-divisions':
                 $button.toggleClass('active');
                 $button
@@ -198,4 +210,4 @@ export default class JournalLostMapPageSheet extends JournalTextPageSheet {
     }
 }
 
-interface JournalLostMapPageSheetOptions extends JournalPageSheet.Options {}
+type JournalLostMapPageSheetOptions = JournalPageSheet.Options;

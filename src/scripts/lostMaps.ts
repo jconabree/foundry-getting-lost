@@ -37,7 +37,7 @@ class LostMapsHelper {
     }
 
     initSidebar() {
-        Hooks.on('renderSidebarTab', (app: SidebarTab, html: JQuery) => {
+        Hooks.on('renderSidebarTab', (app: SidebarTab) => {
             logger.log('rendering sidebar tab', app.tabName);
             // TODO check if current user is GM
 
@@ -49,9 +49,11 @@ class LostMapsHelper {
 
     _addRolltableButton(app: SidebarTab, html: JQuery) {
         const button = document.createElement('button');
+        // eslint-disable-next-line no-restricted-syntax -- legacy: see CLAUDE.md "Known legacy patterns"
         button.innerHTML = 'Create New Lost Map';
         button.className = 'create-lost-map';
         button.addEventListener('click', () => {
+            // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
             console.log('button clicked');
         });
 

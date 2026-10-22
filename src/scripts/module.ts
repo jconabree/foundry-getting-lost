@@ -3,7 +3,7 @@ import lostMaps from './lostMaps.js';
 
 CONFIG.debug.hooks = true;
 
-Hooks.once('init', async function () {
+Hooks.once('init', function () {
     settings.init();
     lostMaps.init();
 });
