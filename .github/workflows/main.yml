@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Extract version embedded in the tag.
       # This step expects the tag to be one of the following formats:
@@ -81,7 +81,7 @@ jobs:
       # "version" key required for a valid module manifest.
       - name: Extract Version From Tag
         id: get_version
-        uses: battila7/get-version-action@v2
+        uses: battila7/get-version-action@d97fbc34ceb64d1f5d95f4dfd6dce33521ccccf5 # v2.3.0
 
 
       # Modify "module.json" with values specific to the release.
@@ -92,7 +92,7 @@ jobs:
       # commited to the repository, and only exist in the action's filesystem.
       - name: Modify Module Manifest With Release-Specific Values
         id: sub_manifest_link_version
-        uses: cschleiden/replace-tokens@v1
+        uses: cschleiden/replace-tokens@63252851d87eb5cb853019ba8538b5c51813779d # v1.4
         with:
           files: '["module.json", "package.json"]'
         env:
@@ -102,9 +102,9 @@ jobs:
           DOWNLOAD: ${{ env.release_module_url }}
       
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 20
+          node-version: 24
       
       - name: Build package
         run: |
@@ -136,7 +136,7 @@ jobs:
       # Update the GitHub release with the manifest and module archive files.
       - name: Update Release With Files
         id: create_version_release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           allowUpdates: true
           name: ${{ github.event.release.name }}
