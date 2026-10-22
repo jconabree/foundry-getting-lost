@@ -1,5 +1,4 @@
 import { GetDataReturnType, MaybePromise } from '@league-of-foundry-developers/fvtt-types/utils';
-import logger from '../logger.js';
 import ModuleTemplate from '../template.js';
 import { LostMapResult } from '../models/LostMapResult.js';
 import settings from '../settings.js';
@@ -59,9 +58,11 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
         const context = (await super.getData(options)) as JournalLostMapResultPageSheetContext;
         context.system = context.document.system;
 
-        context.content = await TextEditor.enrichHTML(context.document.text.content!, {
+        // eslint-disable-next-line no-restricted-globals -- legacy: see CLAUDE.md "Known legacy patterns"
+        context.content = await TextEditor.enrichHTML(context.document.text.content, {
             relativeTo: this.object,
             secrets: this.object.isOwner,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
             // @ts-ignore
             async: true,
         });
@@ -161,9 +162,11 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
      * Handle performing an action.
      * @param {PointerEvent} event  This triggering click event.
      */
-    async _onAction(event: JQuery.ClickEvent) {
+    _onAction(event: JQuery.ClickEvent) {
         event.preventDefault();
+        // eslint-disable-next-line no-restricted-globals -- legacy: see CLAUDE.md "Known legacy patterns"
         const $button = $(event.target).closest('button');
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- legacy: see CLAUDE.md "Known legacy patterns"
         const action = $button.data('action');
 
         switch (action) {
@@ -180,4 +183,4 @@ export default class JournalLostMapResultPageSheet extends JournalTextPageSheet 
     }
 }
 
-interface JournalLostMapPageSheetOptions extends JournalPageSheet.Options {}
+type JournalLostMapPageSheetOptions = JournalPageSheet.Options;

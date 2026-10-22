@@ -8,7 +8,7 @@ const run = async () => {
         onlyDirectories: true,
     });
 
-    const paths = await Promise.all(
+    await Promise.all(
         folders.map(async (folderPath) => {
             const distFolder = folderPath.replace('src/', 'dist/');
             await fsPromise.rm(distFolder, { recursive: true, force: true });

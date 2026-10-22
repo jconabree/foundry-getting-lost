@@ -5,7 +5,7 @@ declare global {
 }
 
 class Settings {
-    #SETTINGS_ID: 'foundry-getting-lost' = 'foundry-getting-lost';
+    #SETTINGS_ID = 'foundry-getting-lost' as const;
 
     /**
      *
@@ -17,6 +17,7 @@ class Settings {
         game.settings!.register(
             this.#SETTINGS_ID,
             configName,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- legacy: see CLAUDE.md "Known legacy patterns"
             // @ts-ignore
             setting,
         );
