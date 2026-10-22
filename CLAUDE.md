@@ -45,6 +45,7 @@ TypeScript, compiled with `tsc` to `dist/`. Target: Foundry v13 minimum, v14 ver
 - Sheet actions (`data-action`): `run-map` (roll, create result page, `Journal.show`), `toggle-divisions` (class toggle only, not persisted).
 - Result math: each roll picks a quadrant (`>= 10` south, `5 < r < 16` east); position halves per roll. Lines/coordinates are computed in the sheets and passed to templates as CSS custom properties.
 - i18n keys: `foundry-getting-lost.*` in `src/languages/en.json`. CSS classes are prefixed `fgl-`.
+- Async hooks (`no-misused-promises`): use `Hooks.once('ready', () => { void onReady(); })` with try/catch inside `onReady`. Never mark the hook callback itself `async`, and never suppress `no-misused-promises` for it.
 
 ## Known legacy patterns
 
