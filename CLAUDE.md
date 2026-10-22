@@ -1,6 +1,6 @@
 # foundry-getting-lost
 
-Shared standards live in `.claude/rules/` (Foundry API, security, code quality, git, manifest, templates/i18n/CSS). This file is package-specific only.
+Shared standards live in `.claude/rules/` (loaded automatically); this file covers only what is specific to this package.
 
 ## What this is
 
@@ -49,7 +49,7 @@ TypeScript, compiled with `tsc` to `dist/`. Target: Foundry v13 minimum, v14 ver
 Per the strict upgrade rule, touching a file means bringing it to standard first, in a separate commit. Items marked "ask" are migration-sized: stop and ask before converting.
 
 - `src/scripts/sheets/LostMap.ts`, `src/scripts/sheets/LostMapResult.ts`: ApplicationV1 `JournalTextPageSheet` with `defaultOptions`, `getData`, `activateListeners`, jQuery (`$(...)`, `.find().on()`) -> `foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet` (AppV2, `HandlebarsApplicationMixin`, `_prepareContext`, `static DEFAULT_OPTIONS.actions`, DOM APIs). Ask. Verify the exact class names against foundryvtt.com/api/v14/ first.
-- Same sheets: global `TextEditor.enrichHTML` -> `foundry.applications.ux.TextEditor.enrichHTML`; drop the `async: true` option.
+- Same sheets: global `TextEditor.enrichHTML` -> `foundry.applications.ux.TextEditor.implementation.enrichHTML`; drop the `async: true` option.
 - Same sheets: `_addDivisionLines` and the `lineColors` palette are duplicated -> one shared module. Hard-coded hex colors also conflict with the CSS rule on theme variables.
 - Same sheets: `// @ts-ignore` comments and `any`-style casts -> proper types or a justifying comment each.
 - `src/scripts/lostMaps.ts`: `renderSidebarTab` hook with jQuery `html` argument and `app.tabName` (V1 sidebar) -> v13+ render hook for the Journal directory (`renderJournalDirectory`) taking an `HTMLElement`. Verify the hook name in the v14 docs.
@@ -60,7 +60,6 @@ Per the strict upgrade rule, touching a file means bringing it to standard first
 - `src/scripts/settings.ts`: `name`/`hint` hard-coded English -> `game.i18n` keys added to `src/languages/en.json`; `// @ts-ignore` on `register` -> typed config.
 - `src/templates/journal/*.hbs`: `{{{content}}}` / `{{{editor.content}}}` lack the adjacent "why safe" comment; `{{> journalEntryPageHeader }}` and `{{ editor }}`/`cssClass` are V1 page-sheet idioms -> comment them now; replace with AppV2 partials during the sheet migration.
 - `src/styles/module.css`: bare `.fgl-*` selectors are prefixed but not under one root class -> scope under a module root class when the sheets are migrated.
-- `module.json`: `compatibility.minimum` is 13, `library` is boolean `false`, and `relationships.systems` is empty because the module is system-agnostic. Do not add a system requirement.
 - `package.json`: copy-paste fields (`keywords: ["Foundry VTT", "WLED"]`, `description`, `main: dist/module.js` which does not exist) -> correct them; `@league-of-foundry-developers/fvtt-types` is `github:...#main` (unpinned) -> pin to a commit hash. Ask before changing dependencies.
 
 ## Verification checklist
@@ -70,7 +69,6 @@ Static (report actual output):
 1. `npx tsc --noEmit` passes.
 2. `npm run build:all` exits 0; `dist/scripts/module.js`, `dist/styles/module.css`, `dist/languages/en.json`, `dist/templates/journal/*.hbs` exist.
 3. `module.json` and `src/languages/en.json` parse as JSON. Every new i18n key is in the language file.
-4. If the parent workspace has the guidance checker script (tools/check-guidance.sh), run it from there with `foundry-getting-lost` as its argument.
 
 Manual in Foundry (list for the user; never claim they pass until the user confirms):
 
@@ -87,7 +85,8 @@ Manual in Foundry (list for the user; never claim they pass until the user confi
 
 - Edit `src/`, never `dist/`. `dist/` is git-ignored build output; the release CI rebuilds it.
 - The model allows 1-5 divisions (`LostMap.MAX_DIVISIONS = 5`), but the language file has a "6 division" label and `lineColors` has 6 colors. A 6-division map is not currently reachable from the sheet; do not assume it works.
-- System-agnostic is the goal (spec decision D10), but both sheets add the `dnd5e2-journal` CSS class unconditionally, so on other systems it is a dead class and the dnd5e styling is untested. Follow-up: apply it only when `game.system.id === "dnd5e"`.
+- System-agnostic is the goal (the module must work without dnd5e and declares no system requirement), but both sheets add the `dnd5e2-journal` CSS class unconditionally, so on other systems it is a dead class and the dnd5e styling is untested. Follow-up: apply it only when `game.system.id === "dnd5e"`.
+- `module.json`: `compatibility.minimum` is 13, `library` is boolean `false`, and `relationships.systems` is empty because the module is system-agnostic. Do not add a system requirement.
 - `module.json` `version` must stay the `#{VERSION}#` token; the release workflow fills it. Do not hard-code a version.
 - `package.json` also uses `#{VERSION}#`, so npm prints that string as the version. This is expected.
 - `LostMapResult` extends `LostMap` and inherits its schema; schema changes affect both subtypes and existing documents. Changing `defineSchema` or field names needs a migration plan; ask first.
