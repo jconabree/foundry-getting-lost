@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- module logger: the sanctioned console sink (.claude/rules/code-quality.md) */
 class Logger {
     #prefix = 'Getting Lost Helper';
 
@@ -9,11 +10,9 @@ class Logger {
         const [message, ...rest] = data;
 
         if (typeof message === 'string') {
-            // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
             return console.log(this.prefix(message), ...rest);
         }
 
-        // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
         console.log(...data);
     }
 
@@ -21,11 +20,9 @@ class Logger {
         const [message, ...rest] = data;
 
         if (typeof message === 'string') {
-            // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
             return console.error(this.prefix(message), ...rest);
         }
 
-        // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
         console.error(...data);
     }
 
@@ -33,11 +30,9 @@ class Logger {
         const [message, ...rest] = data;
 
         if (typeof message === 'string') {
-            // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
             return console.warn(this.prefix(message), ...rest);
         }
 
-        // eslint-disable-next-line no-console -- legacy: see CLAUDE.md "Known legacy patterns"
         console.warn(...data);
     }
 }
