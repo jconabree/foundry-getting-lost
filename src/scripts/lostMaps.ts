@@ -13,22 +13,27 @@ class LostMapsHelper {
     initModel() {
         Object.assign(CONFIG.JournalEntryPage.dataModels, {
             'foundry-getting-lost.lostMap': LostMap,
-            'foundry-getting-lost.lostMapResult': LostMapResult
+            'foundry-getting-lost.lostMapResult': LostMapResult,
         });
 
         DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map', LostMapSheet, {
             label: 'Lost Map',
             types: ['foundry-getting-lost.lostMap'],
             canConfigure: false,
-            makeDefault: true
-        });
-        
-        DocumentSheetConfig.registerSheet(JournalEntryPage, 'fgl-lost-map-result', LostMapResultSheet, {
-            label: 'Lost Map Result',
-            types: ['foundry-getting-lost.lostMapResult'],
             makeDefault: true,
-            canConfigure: false,
         });
+
+        DocumentSheetConfig.registerSheet(
+            JournalEntryPage,
+            'fgl-lost-map-result',
+            LostMapResultSheet,
+            {
+                label: 'Lost Map Result',
+                types: ['foundry-getting-lost.lostMapResult'],
+                makeDefault: true,
+                canConfigure: false,
+            },
+        );
     }
 
     initSidebar() {

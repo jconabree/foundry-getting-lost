@@ -19,13 +19,9 @@
     "systems": [],
     "requires": []
   },
-  "esmodules": [
-    "dist/scripts/module.js"
-  ],
+  "esmodules": ["dist/scripts/module.js"],
   "scripts": [],
-  "styles": [
-    "dist/styles/module.css"
-  ],
+  "styles": ["dist/styles/module.css"],
   "languages": [
     {
       "lang": "en",
